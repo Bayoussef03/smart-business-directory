@@ -134,21 +134,21 @@ def generer_resume_ia(nom, naf, effectif, nb_etab):
     taille, detail_effectif, qualificatif = taille_info
     
     # Construction du résumé élaboré
-    resume = f"**{nom}** est une {taille} ({detail_effectif}) {qualificatif} spécialisée dans **{secteur_desc}**. "
+    resume = f"{nom} est une {taille} ({detail_effectif}) {qualificatif} spécialisée dans {secteur_desc}. "
     
     # Expansion géographique
     try:
         nb = int(nb_etab) if nb_etab else 1
         if nb > 50:
-            resume += f"Son réseau de **{nb} établissements** témoigne d'une implantation territoriale exceptionnelle et d'une stratégie d'expansion ambitieuse. "
+            resume += f"Son réseau de {nb} établissements témoigne d'une implantation territoriale exceptionnelle et d'une stratégie d'expansion ambitieuse. "
         elif nb > 20:
-            resume += f"Avec **{nb} établissements** répartis sur le territoire, elle bénéficie d'une présence géographique significative. "
+            resume += f"Avec {nb} établissements répartis sur le territoire, elle bénéficie d'une présence géographique significative. "
         elif nb > 10:
-            resume += f"Sa présence à travers **{nb} établissements** illustre une stratégie de développement multi-sites réussie. "
+            resume += f"Sa présence à travers {nb} établissements illustre une stratégie de développement multi-sites réussie. "
         elif nb > 5:
-            resume += f"Disposant de **{nb} établissements**, elle affiche une expansion géographique progressive. "
+            resume += f"Disposant de {nb} établissements, elle affiche une expansion géographique progressive. "
         elif nb > 1:
-            resume += f"Elle opère depuis **{nb} établissements**, permettant une proximité régionale. "
+            resume += f"Elle opère depuis {nb} établissements, permettant une proximité régionale. "
         else:
             resume += "Structure centralisée sur un établissement unique, favorisant une gestion directe et réactive. "
     except:
@@ -158,15 +158,15 @@ def generer_resume_ia(nom, naf, effectif, nb_etab):
     score = calculer_score_sante_ia(effectif, nb_etab, naf)
     
     if score >= 85:
-        resume += "**Les indicateurs structurels révèlent une entreprise au profil exceptionnel**, combinant taille critique, expansion territoriale et positionnement sectoriel favorable, suggérant un **potentiel de croissance élevé** et une **résilience remarquable**."
+        resume += "Les indicateurs structurels révèlent une entreprise au profil exceptionnel, combinant taille critique, expansion territoriale et positionnement sectoriel favorable, suggérant un potentiel de croissance élevé et une résilience remarquable."
     elif score >= 70:
-        resume += "**L'analyse des données met en évidence des fondamentaux solides**, avec une structure robuste et un positionnement stratégique pertinent, laissant présager une **trajectoire de développement positive** et une **stabilité financière durable**."
+        resume += "L'analyse des données met en évidence des fondamentaux solides, avec une structure robuste et un positionnement stratégique pertinent, laissant présager une trajectoire de développement positive et une stabilité financière durable."
     elif score >= 55:
-        resume += "**Les critères évalués indiquent une situation stable**, avec des bases saines permettant d'envisager des **opportunités de développement** à moyen terme, sous réserve d'une gestion proactive et adaptée aux évolutions du marché."
+        resume += "Les critères évalués indiquent une situation stable, avec des bases saines permettant d'envisager des opportunités de développement à moyen terme, sous réserve d'une gestion proactive et adaptée aux évolutions du marché."
     elif score >= 40:
-        resume += "**Le profil actuel suggère une phase de vigilance**, nécessitant une attention particulière aux équilibres opérationnels et financiers, avec des **marges d'optimisation identifiées** dans l'organisation ou le positionnement sectoriel."
+        resume += "Le profil actuel suggère une phase de vigilance, nécessitant une attention particulière aux équilibres opérationnels et financiers, avec des marges d'optimisation identifiées dans l'organisation ou le positionnement sectoriel."
     else:
-        resume += "**Les indicateurs appellent à une surveillance accrue**, dans un contexte où les facteurs structurels (taille, secteur, maillage territorial) présentent des **fragilités potentielles** requérant un pilotage stratégique renforcé."
+        resume += "Les indicateurs appellent à une surveillance accrue, dans un contexte où les facteurs structurels (taille, secteur, maillage territorial) présentent des fragilités potentielles requérant un pilotage stratégique renforcé."
     
     return resume
 
@@ -329,7 +329,7 @@ st.markdown("""
     --danger: #ef4444;
     --bg-dark: #1e293b;
     --bg-light: #f8fafc;
-    --text-dark: #0f172a;
+    --text-dark: #334155;
     --text-light: #64748b;
 }
 
@@ -475,6 +475,7 @@ h3 {
 .stMarkdown .element-container div[data-testid="stMarkdownContainer"] p {
     line-height: 1.8 !important;
     font-size: 1.05rem !important;
+    color: #334155 !important;
 }
 
 /* Expanders */
@@ -644,7 +645,7 @@ if mode == "Recherche par SIREN (INSEE)":
                 with col3:
                     st.info(f"**Diagnostic:** {description}")
                 
-                # Résumé IA
+                # Résumé IA (CORRIGÉ - sans balise <p>)
                 st.markdown("### 🤖 Résumé Généré par Intelligence Artificielle")
                 with st.spinner("🧠 Analyse en cours..."):
                     resume = generer_resume_ia(
@@ -653,14 +654,8 @@ if mode == "Recherche par SIREN (INSEE)":
                         effectif=info.get("tranche_effectif_salarie") if info else "N/A",
                         nb_etab=info.get("nombre_etablissements_ouverts") if info else "N/A"
                     )
-                    st.markdown(f"""
-                    <div style="background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%); 
-                                padding: 1.5rem; border-radius: 15px; border-left: 5px solid #6366f1;">
-                        <p style="font-size: 1.1rem; line-height: 1.8; margin: 0; color: #1e293b;">
-                            {resume}
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    # VERSION SIMPLE ET PROPRE
+                    st.info(resume)
 
                 # Informations principales
                 st.markdown("---")
@@ -756,7 +751,7 @@ elif mode == "Recherche par SIRET (INSEE)":
                 with col3:
                     st.info(f"**Diagnostic:** {description}")
                 
-                # Résumé IA
+                # Résumé IA (CORRIGÉ)
                 st.markdown("### 🤖 Résumé Généré par Intelligence Artificielle")
                 with st.spinner("🧠 Analyse en cours..."):
                     resume = generer_resume_ia(
@@ -765,14 +760,7 @@ elif mode == "Recherche par SIRET (INSEE)":
                         effectif=info.get("tranche_effectif_salarie") if info else "N/A",
                         nb_etab=info.get("nombre_etablissements_ouverts") if info else "N/A"
                     )
-                    st.markdown(f"""
-                    <div style="background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%); 
-                                padding: 1.5rem; border-radius: 15px; border-left: 5px solid #6366f1;">
-                        <p style="font-size: 1.1rem; line-height: 1.8; margin: 0; color: #1e293b;">
-                            {resume}
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.info(resume)
 
                 # Informations principales
                 st.markdown("---")
@@ -887,7 +875,6 @@ elif mode == "Recherche par Code NAF (INSEE)":
                             )
                             st.info(resume)
                         
-                        # JSON affiché directement (pas d'expander imbriqué)
                         st.markdown("**📄 Données brutes INSEE :**")
                         st.json(ul)
 
@@ -1009,7 +996,6 @@ elif mode == "Recherche par nom (data.gouv)":
                             )
                             st.info(resume)
                         
-                        # JSON affiché directement (pas d'expander imbriqué)
                         st.markdown("**📄 Données brutes data.gouv :**")
                         st.json(r)
 
